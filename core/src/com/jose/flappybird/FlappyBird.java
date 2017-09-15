@@ -14,9 +14,6 @@ import com.badlogic.gdx.math.Rectangle;
 
 import java.util.Random;
 
-//TODO draw rectangle over buildings
-//TODO adjust bird circle size
-
 public class FlappyBird extends ApplicationAdapter {
     private Preferences preferences;
     private SpriteBatch batch;
