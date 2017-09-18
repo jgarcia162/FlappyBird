@@ -7,18 +7,22 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 
 import java.util.Random;
 
 public class FlappyBird extends ApplicationAdapter {
+    private Stage stage;
     private Preferences preferences;
     private SpriteBatch batch;
     private Texture background;
     private Texture gameOver;
+    private TextureAtlas buttonAtlas;
     private ShapeRenderer shapeRenderer;
 
     private Texture[] birds;
@@ -53,10 +57,12 @@ public class FlappyBird extends ApplicationAdapter {
 
     @Override
     public void create() {
+        stage = new Stage();
+        buttonAtlas = new TextureAtlas(Gdx.files.internal("buttons/buttons.pack"));
         preferences = Gdx.app.getPreferences("Flappy Bird Preferences");
         batch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
-        background = new Texture("bg.png");
+        background = new Texture("bodega.jpg");
         gameOver = new Texture("gameover.png");
         birdCircle = new Circle();
         font = new BitmapFont();
@@ -64,8 +70,8 @@ public class FlappyBird extends ApplicationAdapter {
         font.getData().setScale(10f);
 
         birds = new Texture[2];
-        birds[0] = new Texture("pigeon.png");
-        birds[1] = new Texture("bird2.png");
+        birds[0] = new Texture("wingsdownpigeon.png");
+        birds[1] = new Texture("wingsuppigeon.png");
 
 
         topTube = new Texture("topbuilding.png");
@@ -122,7 +128,9 @@ public class FlappyBird extends ApplicationAdapter {
 
             if (Gdx.input.justTouched()) {
 
-                velocity = -20;
+                velocity = -25;
+                batch.draw(birds[0], Gdx.graphics.getWidth() / 2 - birds[0].getWidth() / 2, birdY);
+                birdCircle.set(Gdx.graphics.getWidth() / 2, birdY + birds[0].getHeight() / 2, birds[0].getWidth() / 2);
 
             }
 
@@ -203,12 +211,13 @@ public class FlappyBird extends ApplicationAdapter {
             flapState = 0;
         }
 
-        batch.draw(birds[0], Gdx.graphics.getWidth() / 2 - birds[0].getWidth() / 2, birdY);
+        batch.draw(birds[1], Gdx.graphics.getWidth() / 2 - birds[1].getWidth() / 2, birdY);
         font.draw(batch, String.valueOf(preferences.getInteger("highScore",0)), 100, Gdx.graphics.getHeight() - 250);
         font.draw(batch, String.valueOf(score), 100, 250);
         batch.end();
         shapeRenderer.end();
-        birdCircle.set(Gdx.graphics.getWidth() / 2, birdY + birds[0].getHeight() / 2, birds[0].getWidth() / 2);
+        //TODO slow down flap speed
+        birdCircle.set(Gdx.graphics.getWidth() / 2, birdY + birds[1].getHeight() / 2, birds[1].getWidth() / 2);
     }
 
     private void saveScore(int score) {
