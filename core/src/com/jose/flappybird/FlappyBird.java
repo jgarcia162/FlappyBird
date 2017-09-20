@@ -17,6 +17,10 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import java.util.Random;
 
 public class FlappyBird extends ApplicationAdapter {
+
+    //TODO add pause button
+    //TODO change background
+    //TODO change game over screen
     private Stage stage;
     private Preferences preferences;
     private SpriteBatch batch;
