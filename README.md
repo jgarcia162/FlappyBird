@@ -1,5 +1,5 @@
 # Paloma
-Simple replica of the popular Flappy Bird game
+Simple replica of the popular Flappy Bird game, with a city twist
 
 A very basic Android replica of the popular Flappy Bird game.
 
