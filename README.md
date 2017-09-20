@@ -1,4 +1,5 @@
-# NY Flappy Bird
-Simple replica of the popular Flappy Bird game, with a New York twist
+# NY Pigeon
+
+Simple replica of a popular game, with a city twist
 
 Developed using [libGDX library](http://libgdx.badlogicgames.com/)
