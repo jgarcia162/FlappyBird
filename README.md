@@ -1,4 +1,4 @@
-# NY Pigeon
+# Paloma
 
 Simple replica of a popular game, with a city twist
 
