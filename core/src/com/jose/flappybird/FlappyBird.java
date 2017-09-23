@@ -13,6 +13,8 @@ import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 
 import java.util.Random;
 
@@ -21,30 +23,34 @@ public class FlappyBird extends ApplicationAdapter {
     //TODO add pause button
     //TODO change background
     //TODO change game over screen
+
     private Stage stage;
+    private Skin skin;
     private Preferences preferences;
     private SpriteBatch batch;
     private Texture background;
     private Texture gameOver;
-    private TextureAtlas buttonAtlas;
-    private ShapeRenderer shapeRenderer;
-
+    private Texture topTube;
+    private Texture bottomTube;
     private Texture[] birds;
+    private TextButton pauseButton;
+    private TextButton.TextButtonStyle buttonStyle;
+    private TextureAtlas buttonAtlas;
+    private Rectangle topTubeRectangle;
+    private Rectangle bottomTubeRectangle;
+    private ShapeRenderer shapeRenderer;
+    private Circle birdCircle;
+    private BitmapFont font;
+
     private int flapState = 0;
     private float birdY = 0;
     private float velocity = 0;
-    private Circle birdCircle;
     private int score = 0;
     int scoringTube = 0;
-    private BitmapFont font;
 
     private int gameState = 0;
     private float gravity = 2;
 
-    private Texture topTube;
-    private Texture bottomTube;
-    private Rectangle topTubeRectangle;
-    private Rectangle bottomTubeRectangle;
     private float gap = 400;
     private float maxTubeOffset;
     private float tubeVelocity = 4;
@@ -62,16 +68,25 @@ public class FlappyBird extends ApplicationAdapter {
     @Override
     public void create() {
         stage = new Stage();
-        buttonAtlas = new TextureAtlas(Gdx.files.internal("buttons/buttons.pack"));
-        preferences = Gdx.app.getPreferences("Flappy Bird Preferences");
         batch = new SpriteBatch();
+        Gdx.input.setInputProcessor(stage);
+        skin = new Skin();
+        font = new BitmapFont();
+        buttonAtlas = new TextureAtlas(Gdx.files.internal("buttons_pack.atlas"));
+        skin.addRegions(buttonAtlas);
+        font.setColor(Color.WHITE);
+        font.getData().setScale(10f);
+        buttonStyle = new TextButton.TextButtonStyle();
+        buttonStyle.font = font;
+        buttonStyle.up = skin.getDrawable("play");
+        buttonStyle.down = skin.getDrawable("pause");
+        pauseButton = new TextButton("Pause",buttonStyle);
+        stage.addActor(pauseButton);
+        preferences = Gdx.app.getPreferences("Flappy Bird Preferences");
         shapeRenderer = new ShapeRenderer();
         background = new Texture("bodega.jpg");
         gameOver = new Texture("gameover.png");
         birdCircle = new Circle();
-        font = new BitmapFont();
-        font.setColor(Color.WHITE);
-        font.getData().setScale(10f);
 
         birds = new Texture[2];
         birds[0] = new Texture("wingsdownpigeon.png");
@@ -103,8 +118,8 @@ public class FlappyBird extends ApplicationAdapter {
 
     @Override
     public void render() {
-
         batch.begin();
+        stage.draw();
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(Color.RED);
         batch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
